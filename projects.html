@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .marquee{overflow:hidden;white-space:nowrap;background:transparent}
+        .marquee-content{display:inline-block;padding-left:100%;animation:marq 12s linear infinite}
+        @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+    </style>
+    <meta charset="UTF-8">
+    <meta lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sanay Godha Portfolio</title>
+</head>
+
+
+<body>
+
+
+    <div class="navbar">
+        <div id="d"></div>
+        <div id="logo" data-page="index.html"> {&lt;/&gt;} </div>
+        <div class="nav-tab" data-page="index.html">⌂ HOME</div>
+        <div class="nav-tab active" data-page="projects.html">⚙ PROJECTS</div>
+        <div class="nav-tab" data-page="about.html">☺ ABOUT ME</div>
+        <div class="nav-tab" data-page="contact.html">☏ CONTACT</div>
+    </div>
+
+
+    <div id="window">
+
+        <div class="marquee">
+            <div class="marquee-item">
+                <span>Tip: right-click the gear to open up an information tab</span>
+                <span>Tip: click the copy button to copy a link to the project's github page</span>
+            </div>
+	    </div>
+        
+        <div class="card"> 
+
+            <div class="disrupt" id="d1"></div> 
+            <pre class="gear" id="g1"></pre> 
+
+            <div class="gear-window"> 
+                <div class="window-top">
+                    <button class="copy-button" data-page="google.com">⧉</button> 
+                    <h2 class="gear-header">Portfolio Website</h2>
+                </div>
+
+                <div class="window-content">
+                    This is the first project where I created a website (probably obvious but just to clarify) to show case all my other projects. By the way there are a lot of easter eggs so... find them all!!
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+<script src="script.js"></script>
+
+</body>
+</html> 
