@@ -7,7 +7,8 @@
     --cyan:#00ffff;
 }
 
-::selection {
+::selection 
+{
     background: var(--bg-contrast);
     color: rgb(145, 255, 255);
 }
@@ -179,7 +180,7 @@ body
     appearance: none;
     -webkit-appearance: none;
     border: 2px solid #009797;
-    border-radius: 5px;
+    border-radius: 50%;
     min-width: 30px;
     min-height: 30px;
     background-color: var(--bg);
