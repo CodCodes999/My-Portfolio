@@ -192,3 +192,16 @@ document.querySelectorAll(".copy-button").forEach(button => {
         window.open(button.dataset.page, "_blank");
     });
 });
+
+const text = "HELLO WORLD!";
+const textElement = document.getElementById("text");
+
+let i = 0;
+function type() {
+    if (i >= text.length) return;
+
+    textElement.textContent += text[i++];
+    setTimeout(type, 300 + Math.random() * 120);
+}
+
+type();
