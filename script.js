@@ -188,15 +188,15 @@ document.querySelectorAll(".nav-tab").forEach(tab => {
 });
 
 document.querySelectorAll(".copy-button").forEach(button => {
-    button.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(button.dataset.page);
+    button.addEventListener("click", () => {
+        window.open(button.dataset.page, "_blank");
 
-        button.disabled = true;
-        button.textContent = "✓";
+        button.disabled = true; // TODO: change the code to look like an info button with no border and js an info icon
+        button.textContent = "ⓘ";
 
         setTimeout(() => {
             button.disabled = false;
-            button.textContent = "⧉";
-        }, 2000);
+            button.textContent = "ⓘ";
+        }, 1000);
     });
 });
