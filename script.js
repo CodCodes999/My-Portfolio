@@ -141,11 +141,7 @@ class Gear {
 
 const gears = [];
 const logo = document.getElementById("logo");
-
-logo.addEventListener("click", () => {
-    window.location.href = logo.dataset.page;
-    Gear.toggleLooping();
-});
+const terminal = document.getElementById("terminal");
 
 document.querySelectorAll("[id]").forEach(element => {
     if (/^g\d+$/.test(element.id)) {
@@ -201,16 +197,22 @@ document.querySelectorAll(".copy-button").forEach(button => {
 
 const text1 = "HELLO WORLD!\nI AM SANAY";
 const text2 = "Software Developer | Mathmetician | Student";
-const text3 = "type 'help' to get started";
 const headElement = document.getElementById("head");
 const headCursor = document.getElementById("cursor");
 const subElement = document.getElementById("subhead");
 const subCursor = document.getElementById("subcursor");
-const subSubElement = document.getElementById("subsubhead");
-const subSubCursor = document.getElementById("subsubcursor");
+
+let opened_terminal = false;
+logo.addEventListener("click", () => {
+    if (!opened_terminal) {
+        terminal.classList.toggle("open")
+        opened_terminal = true;
+    };
+});
 
 let i = 0;
 function typeHead() {
+    headCursor.style.visibility = "visible"
     if (i >= text1.length) {
         headCursor.style.visibility = "hidden";
         subCursor.style.visibility = "visible";
@@ -224,15 +226,13 @@ function typeHead() {
     } else {
         headElement.appendChild(document.createTextNode(char));
     }
-    setTimeout(typeHead, 0 + Math.random() * 120); // TODO: change 0 to 250
+    setTimeout(typeHead, 250 + Math.random() * 120);
 }
 
 let j = 0;
 function typeSub() {
     if (j >= text2.length) {
         subCursor.style.visibility = "hidden";
-        subSubCursor.style.visibility = "visible";
-        typeSubSub();
         return;
     }
 
@@ -242,39 +242,26 @@ function typeSub() {
     } else {
         subElement.appendChild(document.createTextNode(char));
     }
-    setTimeout(typeSub, 0 + Math.random() * 120); // TODO: change 0 to 250
+    setTimeout(typeSub, 250 + Math.random() * 120);
 }
-
-let k = 0;
-function typeSubSub() {
-    if (k >= text3.length) {
-        subSubCursor.style.visibility = "hidden";
-        return;
-    }
-
-    const char = text3[k++];
-    if (char === "\n") {
-        subSubElement.appendChild(document.createElement("br"));
-    } else {
-        subSubElement.appendChild(document.createTextNode(char));
-    }
-    setTimeout(typeSubSub, 0 + Math.random() * 120); // TODO: change 0 to 250
-}
-
-typeHead();
 
 
 // terminal functionality of home page
 
 let currentInput = "";
-let preprompt = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
+let preprompt_text = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
+let introPending = false;
+let typed_help = false;
 const historyElement = document.getElementById("history");
 const inputElement = document.getElementById("user-input");
-const promptElement = document.getElementById("prompt");
+const preprompt = document.getElementById("prompt");
+preprompt.textContent = preprompt_text;
+let history = historyElement.textContent;
+let count = 0;
 
 document.addEventListener("keydown", (e) => { // TODO: build functionality for ctrl+C etc, shift+p etc, cmd+x, copy pasting commands etc
 
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || !opened_terminal) return;
 
     if (e.key === "Enter") {
         e.preventDefault();
@@ -294,14 +281,163 @@ document.addEventListener("keydown", (e) => { // TODO: build functionality for c
     }
 });
 
-function submitCommand(command) {
+function updateHistory(text="") {
     let history = historyElement.textContent;
-    let line = `\n${preprompt}${command}`;
-    if (history == '') {
-        line = `${preprompt}${command}`;
-    }
-    history += line;
+    history += text;
     historyElement.textContent = history;
+    historyElement.scrollTop = historyElement.scrollHeight;
+}
 
-    // TODO: create output lines based on input from command
+function submitCommand(command) {
+    let line = `\n${preprompt.textContent}${command}`;
+    if (historyElement.textContent == "") {
+        line = `${preprompt.textContent}${command}`;
+    }
+    updateHistory(line);
+
+
+    // all commands are here
+
+    if (preprompt.textContent === "") {
+        line = "\nI don't understand what you are saying right now..."
+        const cmd = command.trim().toLowerCase();
+        if ((!cmd.includes("no")) && (cmd.includes("good") || cmd.includes("fine") || cmd.includes("okay"))) {
+            line = "\nThat is nice to hear"
+        }
+        else if (cmd.includes("bad") || cmd.includes("no")) {
+            line = "\nAww that is awful I hope things get better for you"
+        }
+        else if (cmd.includes("help")) {
+            line = "\nWOMP WOMP HAHAHHAHAHAHHAHHAHA LOLOLOLOL WOMP WOMP SUCKS TO BE U HAHAHAHAHA"
+        }
+        preprompt.textContent = preprompt_text;
+        updateHistory(line);
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "intro") {
+        introPending = true;
+        updateHistory("\nAnimation will play once you exit the terminal.");
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "exit") {
+        terminal.classList.toggle("open");
+        terminal.addEventListener("transitionend", function clearOnFadeOut(e) {
+            if (e.propertyName === "opacity" && !terminal.classList.contains("open")) {
+                historyElement.textContent = ""
+                opened_terminal = false;
+                terminal.removeEventListener("transitionend", clearOnFadeOut);
+
+                if (introPending) {
+                    introPending = false;
+                    typeHead();
+                }
+            }
+        });
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "home") {
+        const e = document.getElementById("home");
+        e.style.visibility = "visible"
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "projects") {
+        const e = document.getElementById("projects");
+        e.style.visibility = "visible"
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "about me") {
+        const e = document.getElementById("about-me");
+        e.style.visibility = "visible"
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "contact") {
+        const e = document.getElementById("contact");
+        e.style.visibility = "visible"
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "incorrect commands") {
+        line = `\nyou have entered ${count} number of incorrect commands`;
+        if (count > 100) {
+            line += `, which is a liitle bit too much`;
+        }
+        updateHistory(line);
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "hello") {
+        line = `\nHi, how are you?`;
+        preprompt.textContent = "";
+        updateHistory(line);
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "help") {
+        line = ``;
+        if (count < 3) {
+            line = "\nwell we have a little know it all over here, i guess you earned this: "
+            typed_help = true;
+        }
+        let help = `\n
+        exit: quits the terminal
+        hello: start a conversation with me
+        home: opens home tab
+        projects: opens projects tab
+        about me: opens about me tab
+        contact: opens contact tab
+        incorrect commands: outputs the number of incorrect commands you have entered
+        intro: plays the opening animation
+        help: opens up this menu (although you probably already know that)
+        `;
+        line += help;
+        updateHistory(line);
+        return;
+    }
+
+    if (count === 3) {
+        if (!typed_help) {
+            line = "\n*sigh* This is hopeless, alright then type 'help' to get a list of commands";
+            updateHistory(line);
+            count++;
+            return;
+        }
+        else {
+            line = "\nWhat are you doing I already gave you a list of commands";
+            updateHistory(line);
+            count++;
+            return;
+        }
+    }
+    if (count === 10) {
+        line = "\nI have no idea why you are doing this but just type 'help' already";
+        updateHistory(line);
+        count++;
+        return;
+    }
+    if (count === 100) {
+        line = "\n...\nWHHHHYYYYYYY ARE YOU DOING THIS TO YOURSELF";
+        updateHistory(line);
+        count++;
+        return;
+    }
+    if (count === 1000) {
+        line = "\nAT THIS POINT JUST STOPPP PLEASSEEE I BEG YOUUUU";
+        updateHistory(line);
+        count++;
+        return;
+    }
+    if (count === 1000000) {
+        line = "\nThis is genuinely an accomplishment that is so useless i don't know what to say apart from: Well Done!!";
+        updateHistory(line);
+        count++;
+        return;
+    }
+    count++;
+    updateHistory("\nNo such command exists yet...");
 }

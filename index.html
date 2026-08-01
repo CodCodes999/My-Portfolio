@@ -12,10 +12,10 @@
     <div class="navbar">
         <div id="d"></div>
         <div id="logo" data-page="index.html"> {&lt;/&gt;} </div>
-        <div class="nav-tab active" data-page="index.html">⌂ HOME</div>
-        <div class="nav-tab" data-page="projects.html">⚙ PROJECTS</div>
-        <div class="nav-tab" data-page="about.html">☺ ABOUT ME</div>
-        <div class="nav-tab" data-page="contact.html">☏ CONTACT</div>
+        <div class="nav-tab active" id="home" data-page="index.html">⌂ HOME</div>
+        <div class="nav-tab" id="projects" data-page="projects.html">⚙ PROJECTS</div>
+        <div class="nav-tab" id="about-me" data-page="about.html">☺ ABOUT ME</div>
+        <div class="nav-tab" id="contact" data-page="contact.html">☏ CONTACT</div>
     </div>
 
     <div id="window">
@@ -30,18 +30,13 @@
                 <span id="subhead"></span><span id="subcursor">█</span>
             </div>
         </div>
-        <div id="subsubheader-container">
-            <div id="subsubheader">
-                <span id="subsubhead"></span><span id="subsubcursor">█</span>
-            </div>
-        </div>
 
         <div id="terminal">
             
             <div id="history"></div>
 
             <div id="input-line">
-                <div id="prompt">{&lt;/&gt;} client@tokenode:~> </div><div id="user-input"></div><div id="terminal-cursor">█</div>
+                <div id="prompt"></div><div id="user-input"></div><div id="terminal-cursor">█</div>
             </div>
 
             <div id="response"></div>
