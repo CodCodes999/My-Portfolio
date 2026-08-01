@@ -86,7 +86,7 @@ class Gear {
         }
     }
 
-    right_click_animation(e) { /* TODO: make a copy button which copies the link of the project into clipboard */
+    right_click_animation(e) {
         if (!this.left_clicked) {
             this.click_animation();
             
@@ -135,6 +135,9 @@ class Gear {
         localStorage.setItem("gearLooping", Gear.looping);
     }
 }
+
+
+// event listeners
 
 const gears = [];
 const logo = document.getElementById("logo");
@@ -193,15 +196,112 @@ document.querySelectorAll(".copy-button").forEach(button => {
     });
 });
 
-const text = "HELLO WORLD!";
-const textElement = document.getElementById("text");
+
+// header section of home page
+
+const text1 = "HELLO WORLD!\nI AM SANAY";
+const text2 = "Software Developer | Mathmetician | Student";
+const text3 = "type 'help' to get started";
+const headElement = document.getElementById("head");
+const headCursor = document.getElementById("cursor");
+const subElement = document.getElementById("subhead");
+const subCursor = document.getElementById("subcursor");
+const subSubElement = document.getElementById("subsubhead");
+const subSubCursor = document.getElementById("subsubcursor");
 
 let i = 0;
-function type() {
-    if (i >= text.length) return;
+function typeHead() {
+    if (i >= text1.length) {
+        headCursor.style.visibility = "hidden";
+        subCursor.style.visibility = "visible";
+        typeSub();
+        return;
+    }
 
-    textElement.textContent += text[i++];
-    setTimeout(type, 300 + Math.random() * 120);
+    const char = text1[i++];
+    if (char === "\n") {
+        headElement.appendChild(document.createElement("br"));
+    } else {
+        headElement.appendChild(document.createTextNode(char));
+    }
+    setTimeout(typeHead, 0 + Math.random() * 120); // TODO: change 0 to 250
 }
 
-type();
+let j = 0;
+function typeSub() {
+    if (j >= text2.length) {
+        subCursor.style.visibility = "hidden";
+        subSubCursor.style.visibility = "visible";
+        typeSubSub();
+        return;
+    }
+
+    const char = text2[j++];
+    if (char === "\n") {
+        subElement.appendChild(document.createElement("br"));
+    } else {
+        subElement.appendChild(document.createTextNode(char));
+    }
+    setTimeout(typeSub, 0 + Math.random() * 120); // TODO: change 0 to 250
+}
+
+let k = 0;
+function typeSubSub() {
+    if (k >= text3.length) {
+        subSubCursor.style.visibility = "hidden";
+        return;
+    }
+
+    const char = text3[k++];
+    if (char === "\n") {
+        subSubElement.appendChild(document.createElement("br"));
+    } else {
+        subSubElement.appendChild(document.createTextNode(char));
+    }
+    setTimeout(typeSubSub, 0 + Math.random() * 120); // TODO: change 0 to 250
+}
+
+typeHead();
+
+
+// terminal functionality of home page
+
+let currentInput = "";
+let preprompt = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
+const historyElement = document.getElementById("history");
+const inputElement = document.getElementById("user-input");
+const promptElement = document.getElementById("prompt");
+
+document.addEventListener("keydown", (e) => { // TODO: build functionality for ctrl+C etc, shift+p etc, cmd+x, copy pasting commands etc
+
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        submitCommand(currentInput);
+        currentInput = "";
+        inputElement.textContent = currentInput;
+    }
+    else if (e.key === "Backspace") {
+        e.preventDefault();
+        currentInput = currentInput.slice(0, -1);
+        inputElement.textContent = currentInput;
+    }
+    else if (e.key.length === 1) {
+        e.preventDefault();
+        currentInput += e.key;
+        inputElement.textContent = currentInput;
+    }
+});
+
+function submitCommand(command) {
+    let history = historyElement.textContent;
+    let line = `\n${preprompt}${command}`;
+    if (history == '') {
+        line = `${preprompt}${command}`;
+    }
+    history += line;
+    historyElement.textContent = history;
+
+    // TODO: create output lines based on input from command
+}
