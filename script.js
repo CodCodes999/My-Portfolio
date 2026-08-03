@@ -247,6 +247,7 @@ function typeSub() {
 
 
 // terminal functionality of home page
+// TODO: fix bug where tabs are hidden if you switch tabs to a different tab
 
 let currentInput = "";
 let preprompt_text = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
