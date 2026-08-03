@@ -142,6 +142,21 @@ class Gear {
 const gears = [];
 const logo = document.getElementById("logo");
 const terminal = document.getElementById("terminal");
+const navEntry = performance.getEntriesByType("navigation")[0];
+const isReload = navEntry && navEntry.type === "reload";
+
+if (isReload) {
+    ["home", "projects", "about-me", "contact"].forEach(id => {
+        localStorage.removeItem(`tab_${id}_visible`);
+    });
+}
+
+["home", "projects", "about-me", "contact"].forEach(id => {
+    if (localStorage.getItem(`tab_${id}_visible`) === "true") {
+        const el = document.getElementById(id);
+        if (el) el.style.visibility = "visible";
+    }
+});
 
 document.querySelectorAll("[id]").forEach(element => {
     if (/^g\d+$/.test(element.id)) {
@@ -246,8 +261,7 @@ function typeSub() {
 }
 
 
-// terminal functionality of home page
-// TODO: fix bug where tabs are hidden if you switch tabs to a different tab
+// terminal functionality
 
 let currentInput = "";
 let preprompt_text = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
@@ -289,6 +303,54 @@ function updateHistory(text="") {
     historyElement.scrollTop = historyElement.scrollHeight;
 }
 
+function revealTab(id) {
+    const el = document.getElementById(id);
+    el.style.visibility = "visible";
+    localStorage.setItem(`tab_${id}_visible`, "true");
+}
+
+function normalizeColor(colorString) {
+    const temp = document.createElement("span");
+    temp.style.color = colorString;
+    if (temp.style.color === "") {
+        return null;
+    }
+    document.body.appendChild(temp);
+    const computed = getComputedStyle(temp).color;
+    document.body.removeChild(temp);
+    return computed;
+}
+
+function adjustColor(rgbString, dr, dg, db) {
+    // positive amount = lighter, negative = darker
+    rgbString = normalizeColor(rgbString);
+    if (!rgbString) {return null;}
+    const match = rgbString.match(/\d+/g);
+    if (!match) return rgbString;
+    const [r, g, b] = match.map(Number);
+    const clamp = (v) => Math.min(255, Math.max(0, v));
+    const newR = clamp(r + dr);
+    const newG = clamp(g + dg);
+    const newB = clamp(b + db);
+    return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
+function setBackgroundColor(rgbString) {
+    document.documentElement.style.setProperty("--bg", rgbString);
+    document.documentElement.style.setProperty("--bg-contrast", adjustColor(rgbString, 0, 27, 27));
+    document.documentElement.style.setProperty("--bg-hover", adjustColor(rgbString, 0, 12, 12));
+}
+
+function setTextColor(rgbString) {
+    document.documentElement.style.setProperty("--text", rgbString);
+    document.documentElement.style.setProperty("--text-shadow", adjustColor(rgbString, -6, -68, -70));
+}
+
+function setMainColor(rgbString) {
+    document.documentElement.style.setProperty("--cyan", rgbString);
+    document.documentElement.style.setProperty("--half-cyan", adjustColor(rgbString, -127, -127, -127));
+}
+
 function submitCommand(command) {
     let line = `\n${preprompt.textContent}${command}`;
     if (historyElement.textContent == "") {
@@ -303,13 +365,13 @@ function submitCommand(command) {
         line = "\nI don't understand what you are saying right now..."
         const cmd = command.trim().toLowerCase();
         if ((!cmd.includes("no")) && (cmd.includes("good") || cmd.includes("fine") || cmd.includes("okay"))) {
-            line = "\nThat is nice to hear"
+            line = "\nThat is nice to hear";
         }
         else if (cmd.includes("bad") || cmd.includes("no")) {
-            line = "\nAww that is awful I hope things get better for you"
+            line = "\nAww that is awful I hope things get better for you";
         }
         else if (cmd.includes("help")) {
-            line = "\nWOMP WOMP HAHAHHAHAHAHHAHHAHA LOLOLOLOL WOMP WOMP SUCKS TO BE U HAHAHAHAHA"
+            line = "\nWOMP WOMP HAHAHHAHAHAHHAHHAHA LOLOLOLOL WOMP WOMP SUCKS TO BE U HAHAHAHAHA";
         }
         preprompt.textContent = preprompt_text;
         updateHistory(line);
@@ -317,8 +379,13 @@ function submitCommand(command) {
     }
 
     if (command.trim().toLowerCase() === "intro") {
-        introPending = true;
-        updateHistory("\nAnimation will play once you exit the terminal.");
+        const currentPage = window.location.pathname.split("/").pop();
+        if (currentPage === "index.html") {
+            introPending = true;
+            updateHistory("\nAnimation will play once you exit the terminal.");
+            return;
+        }
+        updateHistory("\nAnimation is unavaiable, maybe explore somewhere else?");
         return;
     }
 
@@ -326,7 +393,7 @@ function submitCommand(command) {
         terminal.classList.toggle("open");
         terminal.addEventListener("transitionend", function clearOnFadeOut(e) {
             if (e.propertyName === "opacity" && !terminal.classList.contains("open")) {
-                historyElement.textContent = ""
+                historyElement.textContent = "";
                 opened_terminal = false;
                 terminal.removeEventListener("transitionend", clearOnFadeOut);
 
@@ -340,26 +407,22 @@ function submitCommand(command) {
     }
 
     if (command.trim().toLowerCase() === "home") {
-        const e = document.getElementById("home");
-        e.style.visibility = "visible"
+        revealTab("home");
         return;
     }
 
     if (command.trim().toLowerCase() === "projects") {
-        const e = document.getElementById("projects");
-        e.style.visibility = "visible"
+        revealTab("projects");
         return;
     }
 
     if (command.trim().toLowerCase() === "about me") {
-        const e = document.getElementById("about-me");
-        e.style.visibility = "visible"
+        revealTab("about-me");
         return;
     }
 
     if (command.trim().toLowerCase() === "contact") {
-        const e = document.getElementById("contact");
-        e.style.visibility = "visible"
+        revealTab("contact");
         return;
     }
 
@@ -369,6 +432,51 @@ function submitCommand(command) {
             line += `, which is a liitle bit too much`;
         }
         updateHistory(line);
+        return;
+    }
+
+    if (command.trim().toLowerCase() === "loop") {
+        Gear.looping = Gear.looping ? false : true;
+        updateHistory("\nToggled looping");
+        return;
+    }
+
+    if (command.trim().toLowerCase().startsWith("theme")) { // TODO: make colour changes persist throughout website
+        const words = command.trim().toLowerCase().split(" ");
+        console.log(words);
+        if (words.includes("-bg")) {
+            const i = words.indexOf("-bg");
+            const bg = words[i+1];
+            try {
+                setBackgroundColor(bg);
+                updateHistory(`\nChanged background colour to ${bg}`);
+            }
+            catch (error) {
+                updateHistory(`\nError occured, please state a valid colour`);
+            }
+        }
+        if (words.includes("-c")) {
+            const i = words.indexOf("-c");
+            const colour = words[i+1];
+            try {
+                setMainColor(colour);
+                updateHistory(`\nChanged main colour to ${colour}`);
+            }
+            catch (error) {
+                updateHistory(`\nError occured, please state a valid colour`);
+            }
+        }
+        if (words.includes("-t")) {
+            const i = words.indexOf("-t");
+            const text = words[i+1];
+            try {
+                setTextColor(text);
+                updateHistory(`\nChanged text colour to ${text}`);
+            }
+            catch (error) {
+                updateHistory(`\nError occured, please state a valid colour`);
+            }
+        }
         return;
     }
 
@@ -386,15 +494,23 @@ function submitCommand(command) {
             typed_help = true;
         }
         let help = `\n
-        exit: quits the terminal
-        hello: start a conversation with me
         home: opens home tab
         projects: opens projects tab
         about me: opens about me tab
         contact: opens contact tab
+
+        hello: start a conversation with me
         incorrect commands: outputs the number of incorrect commands you have entered
         intro: plays the opening animation
+        loop: toggle looping
+        theme -flag colour:
+            flags:
+                -c: changes main colour of website
+                -bg: changes background colour of website
+                -t: changes text colour of website
+
         help: opens up this menu (although you probably already know that)
+        exit: quits the terminal
         `;
         line += help;
         updateHistory(line);

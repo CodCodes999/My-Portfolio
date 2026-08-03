@@ -1,16 +1,18 @@
 :root
 {
-    --bg:rgb(0, 17, 17);
+    --bg: rgb(0, 17, 17);
     --bg-contrast: rgb(0, 44, 44);
-    --text:rgb(18, 196, 202);
-    --shadow:rgb(12, 128, 132);
-    --cyan:#00ffff;
+    --bg-hover: rgb(0, 29, 29);
+    --text: rgb(18, 196, 202);
+    --text-shadow: rgb(12, 128, 132);
+    --cyan: #00ffff;
+    --half-cyan: #008888;
 }
 
 ::selection 
 {
     background: var(--bg-contrast);
-    color: rgb(145, 255, 255);
+    color: var(--cyan);
 }
 
 body
@@ -39,8 +41,8 @@ body
     color: var(--text);
     background: transparent;
     text-shadow: 
-            0 0 5px var(--shadow),
-            0 0 15px cyan;
+            0 0 5px var(--text-shadow),
+            0 0 15px var(--cyan);
 }
 
 @keyframes marquee-content 
@@ -84,7 +86,7 @@ body
     background:var(--bg-contrast);
     color:var(--text);
     text-shadow: 
-        0 0 5px var(--shadow),
+        0 0 5px var(--text-shadow),
         0 0 10px var(--cyan),
         0 0 20px var(--cyan),
         0 0 40px var(--cyan);
@@ -98,7 +100,7 @@ body
 
 .nav-tab:hover
 {
-    background:rgb(0, 29, 29);
+    background:var(--bg-hover);
 }
 
 .nav-tab.active
@@ -127,10 +129,10 @@ body
     background: transparent;
     color: var(--text);
     text-shadow: 
-        0 0 5px var(--shadow),
-        0 0 10px var(--shadow),
-        0 0 20px var(--shadow),
-        0 0 35px #009797;
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
     width: 100%;
     height: 90%;
     text-align: left;
@@ -161,17 +163,17 @@ body
     padding: 6px;
     background: var(--bg);
     box-sizing: border-box;
-    border: 2px solid #009797;
+    border: 2px solid var(--bg);
     border-radius: 10px;
     box-shadow: 
-        0 0 5px var(--shadow),
+        0 0 5px var(--text-shadow),
         0 0 10px var(--cyan),
         0 0 25px var(--cyan);
     text-shadow: 
-        0 0 5px var(--shadow),
-        0 0 10px var(--shadow),
-        0 0 20px var(--shadow),
-        0 0 35px #009797;
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
     z-index: 100;
     visibility: hidden;
     display: none;
@@ -181,17 +183,17 @@ body
 {
     appearance: none;
     -webkit-appearance: none;
-    border: 2px solid #009797;
+    border: 2px solid var(--bg);
     border-radius: 50%;
     min-width: 30px;
     min-height: 30px;
     background-color: var(--bg);
     color: var(--text);
     box-shadow: 
-        0 0 5px var(--shadow),
-        0 0 10px cyan;
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--cyan);
     text-shadow: 
-        0 0 5px var(--shadow),
+        0 0 5px var(--text-shadow),
         0 0 10px var(--cyan),
         0 0 20px var(--cyan);
     font: inherit;
@@ -202,11 +204,6 @@ body
 .copy-button:hover:enabled 
 {
     background: var(--bg-contrast);
-}
-
-.copy-button:disabled
-{
-    background: black;
 }
 
 .gear-header 
@@ -258,8 +255,8 @@ body
     font-size: 160px;
     font-weight: 1000;
     text-shadow:
-        0 0 5px var(--shadow),
-        0 0 15px var(--shadow),
+        0 0 5px var(--text-shadow),
+        0 0 15px var(--text-shadow),
         0 0 30px var(--cyan);
 }
 
@@ -272,8 +269,8 @@ body
     font-size: 40px;
     font-weight: 600;
     text-shadow:
-        0 0 5px var(--shadow),
-        0 0 15px var(--shadow),
+        0 0 5px var(--text-shadow),
+        0 0 15px var(--text-shadow),
         0 0 30px var(--cyan);
 }
 
@@ -286,8 +283,8 @@ body
     font-weight: 1000;
     margin-left: 2px;
     text-shadow: 
-            0 0 5px var(--shadow),
-            0 0 15px var(--shadow),
+            0 0 5px var(--text-shadow),
+            0 0 15px var(--text-shadow),
             0 0 30px var(--cyan);
 
     animation: blink 1.1s steps(1) infinite;
@@ -302,8 +299,8 @@ body
     font-weight: 600;
     margin-left: 2px;
     text-shadow: 
-            0 0 5px var(--shadow),
-            0 0 15px var(--shadow),
+            0 0 5px var(--text-shadow),
+            0 0 15px var(--text-shadow),
             0 0 30px var(--cyan);
 
     animation: blink 1.1s steps(1) infinite;
@@ -325,8 +322,8 @@ body
     margin-right: 40px;
     width: 50%;
     text-shadow: 
-            0 0 5px var(--shadow),
-            0 0 10px var(--shadow),
+            0 0 5px var(--text-shadow),
+            0 0 10px var(--text-shadow),
             0 0 20px var(--cyan);
 }
 
@@ -336,7 +333,7 @@ body
     color: var(--text);
     margin-left: 10px;
     text-shadow: 
-            0 0 5px var(--shadow),
+            0 0 5px var(--text-shadow),
             0 0 10px var(--cyan);
     background-color: var(--bg);
     border: 5px solid var(--bg-contrast);
