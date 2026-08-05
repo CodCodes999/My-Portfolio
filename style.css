@@ -78,6 +78,11 @@ body
     background: var(--bg-contrast);
     padding-top: 7px;
     padding-right: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
 }
 
 .nav-tab
@@ -327,6 +332,22 @@ body
     margin-top: 100px;
     margin-right: 40px;
     width: 50%;
+    text-shadow: 
+            0 0 5px var(--text-shadow),
+            0 0 10px var(--text-shadow),
+            0 0 20px var(--cyan);
+}
+
+#scroll-space
+{
+    height: 94vh;
+}
+
+#text-space
+{
+    color: var(--text);
+    background: var(--bg);
+    padding: 60px 40px;
     text-shadow: 
             0 0 5px var(--text-shadow),
             0 0 10px var(--text-shadow),
