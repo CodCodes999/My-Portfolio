@@ -93,15 +93,8 @@ class Gear {
             this.window.style.display = this.window.style.display == "block" ? "none" : "block";
             const card_rect = this.gear.parentElement.getBoundingClientRect();
             const window_rect = this.window.getBoundingClientRect();
-            console.log(card_rect, window_rect);
             let x = 0;
             let y = 0;
-            console.log(x, y);
-            console.log(this.window.style.display, this.window.style.visibility);
-            
-            console.log(x, y);
-            console.log(this.window.style.display, this.window.style.visibility);
-
             if (e.clientX + window_rect.width >= window.innerWidth) {
                 x = e.clientX - card_rect.left - window_rect.width;
             }
@@ -115,15 +108,7 @@ class Gear {
             else {
                 y = e.clientY - card_rect.top;
             }
-
-            console.log(x, y);
-            console.log(this.window.style.display, this.window.style.visibility);
-
             this.window.style.visibility = this.window.style.visibility == "visible" ? "hidden" : "visible";
-
-            console.log(x, y);
-            console.log(this.window.style.display, this.window.style.visibility);
-
             this.window.style.left = `${x}px`;
             this.window.style.top = `${y}px`;
             this.right_clicked = !this.right_clicked;
@@ -136,7 +121,6 @@ class Gear {
     }
 }
 
-
 // event listeners
 
 const gears = [];
@@ -144,19 +128,115 @@ const logo = document.getElementById("logo");
 const terminal = document.getElementById("terminal");
 const navEntry = performance.getEntriesByType("navigation")[0];
 const isReload = navEntry && navEntry.type === "reload";
+const cyan = "rgb(0,255,255)";
+const bg = "rgb(0, 17, 17)";
+const text = "rgb(18, 196, 202)";
+const codeLines = [
+    "const x = 42; function render() { return x; }",
+    "npm install --save-dev webpack webpack-cli",
+    "git commit -m 'fix: resolve merge conflict'",
+    "SELECT * FROM users WHERE active = true;",
+    "for (let i = 0; i < arr.length; i++) { }",
+    "def calculate_sum(a, b): return a + b",
+    "docker run -p 3000:3000 my-app:latest",
+    "class Gear extends Animation { constructor() }",
+    "import React, { useState } from 'react';",
+    "sudo systemctl restart nginx.service",
+    "const data = await fetch('/api/users');",
+    "if (err != nil) { log.Fatal(err) }",
+    "public static void main(String[] args) {}",
+    "let result = array.filter(x => x > 10);",
+    "SELECT COUNT(*) FROM orders GROUP BY id;",
+    "func fibonacci(n int) int { return n }",
+    "curl -X POST https://api.example.com/v1",
+    "try { JSON.parse(data); } catch (e) {}",
+    "export default function App() { return }",
+    "while (queue.length > 0) { process(); }",
+    "const [state, setState] = useState(null);",
+    "python3 -m venv env && source env/bin/activate",
+    "git push origin feature/matrix-rain",
+    "async function fetchData() { await sleep(1); }",
+    "type Props = { name: string; age: number };",
+    "SELECT id, name FROM products WHERE id = 1;",
+    "kubectl apply -f deployment.yaml",
+    "const sum = arr.reduce((a, b) => a + b, 0);",
+    "console.log('Debugging line 42:', value);",
+    "interface User { id: number; email: string }",
+    "npm run build && npm run deploy",
+    "SELECT * FROM logs ORDER BY timestamp DESC;",
+    "const regex = /^[a-zA-Z0-9]+$/;",
+    "make build && make test && make deploy",
+    "if not os.path.exists(path): os.mkdir(path)",
+    "git rebase -i HEAD~3",
+    "const el = document.querySelector('.card');",
+    "SELECT * FROM sessions WHERE expired = 0;",
+    "chmod +x deploy.sh && ./deploy.sh",
+    "public interface Runnable { void run(); }",
+    "const obj = { ...defaults, ...overrides };",
+    "yarn add axios lodash moment",
+    "echo 'Hello, World!' | grep 'World'",
+    "SELECT DISTINCT category FROM products;",
+    "func main() { fmt.Println('hello') }",
+    "const promise = new Promise((res, rej) => {});",
+    "git checkout -b feature/new-terminal",
+    "const [a, b] = [1, 2]; console.log(a + b);",
+    "SELECT * FROM cache WHERE key = 'session';",
+    "npx create-react-app my-portfolio",
+    "return arr.map(x => x * 2).filter(x => x > 0);"
+];
 
-if (isReload) {
-    ["home", "projects", "about-me", "contact"].forEach(id => {
-        localStorage.removeItem(`tab_${id}_visible`);
-    });
+function pickRandom(arr, count) {
+    const result = [];
+    for (let i = 0; i < count; i++) {
+        result.push(arr[Math.floor(Math.random() * arr.length)]);
+    }
+    return result;
 }
 
-["home", "projects", "about-me", "contact"].forEach(id => {
-    if (localStorage.getItem(`tab_${id}_visible`) === "true") {
-        const el = document.getElementById(id);
-        if (el) el.style.visibility = "visible";
+for (let i = 0; i < 25; i++) {
+    const num = Math.floor(Math.random() * 3) + 1;
+    const row = document.createElement("div");
+    row.classList.add("bg-marquee", `row${num}`);
+    const content = document.createElement("div");
+    content.classList.add("bg-marquee-content");
+    const someLines = pickRandom(codeLines, 10);
+    content.textContent = someLines.join("   ·   ");
+    row.appendChild(content);
+    document.querySelector(".bg-marquee-stack").appendChild(row);
+}
+
+function reloadLocalStorage() {
+    // removing local storage variables if reloaded website
+    if (isReload) {
+        ["home", "projects", "about-me", "contact"].forEach(id => {
+            localStorage.removeItem(`tab_${id}_visible`);
+        });
+        localStorage.removeItem("help");
+        localStorage.removeItem("bg");
+        localStorage.removeItem("text");
+        localStorage.removeItem("cyan");
     }
-});
+
+    // reload local storage variables
+    ["home", "projects", "about-me", "contact"].forEach(id => {
+        if (localStorage.getItem(`tab_${id}_visible`) === "true") {
+            const el = document.getElementById(id);
+            if (el) el.style.visibility = "visible";
+        }
+    });
+    help = `\n
+hello: start a conversation with me
+help: opens up this menu (although you probably already know that)
+exit: quits the terminal
+eggs: how many easter eggs have you discovered
+    `;
+    localStorage.setItem("help", help);
+    setBackgroundColor(localStorage.getItem("bg"));
+    setMainColor(localStorage.getItem("cyan"));
+    setTextColor(localStorage.getItem("text"));
+}
+
+reloadLocalStorage();
 
 document.querySelectorAll("[id]").forEach(element => {
     if (/^g\d+$/.test(element.id)) {
@@ -274,10 +354,31 @@ preprompt.textContent = preprompt_text;
 let history = historyElement.textContent;
 let count = 0;
 
-document.addEventListener("keydown", (e) => { // TODO: build functionality for ctrl+C etc, shift+p etc, cmd+x, copy pasting commands etc
+async function paste() {
+    const text = await navigator.clipboard.readText();
+    currentInput = text;
+    inputElement.textContent = currentInput;
+    return text;
+}
 
-    if (e.ctrlKey || e.metaKey || e.altKey || !opened_terminal) return;
+document.addEventListener("keydown", (e) => {
 
+    if (!opened_terminal) {return;}
+
+    if (e.ctrlKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        currentInput = "";
+        inputElement.textContent = currentInput;
+        updateHistory("\n{</>} client@tokenode:~> ^C"); // maybe clean this up
+        introPending = false;
+        updateHistory("\nIntro animation is cancelled");
+        return;
+    }
+    if (e.metaKey && e.key.toLowerCase() === "v") {
+        e.preventDefault();
+        paste();
+        return;
+    }
     if (e.key === "Enter") {
         e.preventDefault();
         submitCommand(currentInput);
@@ -294,6 +395,10 @@ document.addEventListener("keydown", (e) => { // TODO: build functionality for c
         currentInput += e.key;
         inputElement.textContent = currentInput;
     }
+
+    if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+    }
 });
 
 function updateHistory(text="") {
@@ -307,6 +412,14 @@ function revealTab(id) {
     const el = document.getElementById(id);
     el.style.visibility = "visible";
     localStorage.setItem(`tab_${id}_visible`, "true");
+}
+
+function updateHelp(line="") {
+    let help = localStorage.getItem("help")
+    if (!help.includes(line)) {
+        help += line;
+    }
+    localStorage.setItem("help", help);
 }
 
 function normalizeColor(colorString) {
@@ -323,8 +436,9 @@ function normalizeColor(colorString) {
 
 function adjustColor(rgbString, dr, dg, db) {
     // positive amount = lighter, negative = darker
-    rgbString = normalizeColor(rgbString);
-    if (!rgbString) {return null;}
+    if (!rgbString) {
+        return null;
+    }
     const match = rgbString.match(/\d+/g);
     if (!match) return rgbString;
     const [r, g, b] = match.map(Number);
@@ -335,20 +449,38 @@ function adjustColor(rgbString, dr, dg, db) {
     return `rgb(${newR}, ${newG}, ${newB})`;
 }
 
-function setBackgroundColor(rgbString) {
+function setBackgroundColor(colorString) {
+    const parsed = normalizeColor(colorString);
+    const rgbString = parsed || bg;
+
+    localStorage.setItem("bg", rgbString);
     document.documentElement.style.setProperty("--bg", rgbString);
     document.documentElement.style.setProperty("--bg-contrast", adjustColor(rgbString, 0, 27, 27));
     document.documentElement.style.setProperty("--bg-hover", adjustColor(rgbString, 0, 12, 12));
+
+    return parsed !== null;
 }
 
-function setTextColor(rgbString) {
+function setTextColor(colorString) {
+    const parsed = normalizeColor(colorString);
+    const rgbString = parsed || text;
+
+    localStorage.setItem("text", rgbString);
     document.documentElement.style.setProperty("--text", rgbString);
     document.documentElement.style.setProperty("--text-shadow", adjustColor(rgbString, -6, -68, -70));
+
+    return parsed !== null;
 }
 
-function setMainColor(rgbString) {
+function setMainColor(colorString) {
+    const parsed = normalizeColor(colorString);
+    const rgbString = parsed || cyan;
+
+    localStorage.setItem("cyan", rgbString);
     document.documentElement.style.setProperty("--cyan", rgbString);
     document.documentElement.style.setProperty("--half-cyan", adjustColor(rgbString, -127, -127, -127));
+
+    return parsed !== null;
 }
 
 function submitCommand(command) {
@@ -383,9 +515,11 @@ function submitCommand(command) {
         if (currentPage === "index.html") {
             introPending = true;
             updateHistory("\nAnimation will play once you exit the terminal.");
+            updateHelp("\nintro: introduces myself");
             return;
         }
         updateHistory("\nAnimation is unavaiable, maybe explore somewhere else?");
+        updateHelp("\nintro: introduces myself");
         return;
     }
 
@@ -408,21 +542,25 @@ function submitCommand(command) {
 
     if (command.trim().toLowerCase() === "home") {
         revealTab("home");
+        updateHelp("\nhome: reveals home tab");
         return;
     }
 
     if (command.trim().toLowerCase() === "projects") {
         revealTab("projects");
+        updateHelp("\nprojects: reveals projects tab");
         return;
     }
 
     if (command.trim().toLowerCase() === "about me") {
         revealTab("about-me");
+        updateHelp("\nabout me: reveals about me tab");
         return;
     }
 
     if (command.trim().toLowerCase() === "contact") {
         revealTab("contact");
+        updateHelp("\ncontact: reveals contact tab");
         return;
     }
 
@@ -432,51 +570,50 @@ function submitCommand(command) {
             line += `, which is a liitle bit too much`;
         }
         updateHistory(line);
+        updateHelp("\nincorrect commands: displays number of incorrect commands inputted");
         return;
     }
 
     if (command.trim().toLowerCase() === "loop") {
         Gear.looping = Gear.looping ? false : true;
         updateHistory("\nToggled looping");
+        updateHelp("\nloop: toggles looping");
         return;
     }
 
-    if (command.trim().toLowerCase().startsWith("theme")) { // TODO: make colour changes persist throughout website
+    if (command.trim().toLowerCase().startsWith("theme")) {
         const words = command.trim().toLowerCase().split(" ");
-        console.log(words);
         if (words.includes("-bg")) {
             const i = words.indexOf("-bg");
             const bg = words[i+1];
-            try {
-                setBackgroundColor(bg);
-                updateHistory(`\nChanged background colour to ${bg}`);
-            }
-            catch (error) {
-                updateHistory(`\nError occured, please state a valid colour`);
-            }
+            const success = setBackgroundColor(bg);
+            updateHistory(success
+                ? `\nChanged background colour to ${bg}`
+                : `\n"${bg}" isn't a valid colour, reverted to default`);
         }
         if (words.includes("-c")) {
             const i = words.indexOf("-c");
             const colour = words[i+1];
-            try {
-                setMainColor(colour);
-                updateHistory(`\nChanged main colour to ${colour}`);
-            }
-            catch (error) {
-                updateHistory(`\nError occured, please state a valid colour`);
-            }
+            const success = setMainColor(colour);
+            updateHistory(success
+                ? `\nChanged main colour to ${colour}`
+                : `\n"${colour}" isn't a valid colour, reverted to default`);
         }
         if (words.includes("-t")) {
             const i = words.indexOf("-t");
             const text = words[i+1];
-            try {
-                setTextColor(text);
-                updateHistory(`\nChanged text colour to ${text}`);
-            }
-            catch (error) {
-                updateHistory(`\nError occured, please state a valid colour`);
-            }
+            const success = setTextColor(text);
+            updateHistory(success
+                ? `\nChanged text colour to ${text}`
+                : `\n"${text}" isn't a valid colour, reverted to default`);
         }
+        if (words.includes("normal")) {
+            setBackgroundColor('false value');
+            setMainColor('false value');
+            setTextColor('false value');
+            updateHistory("\nreverted all colours back to normal");
+        }
+        updateHelp("\ntheme (-c) (-t) (-bg) (colour): changes theme colours");
         return;
     }
 
@@ -493,25 +630,7 @@ function submitCommand(command) {
             line = "\nwell we have a little know it all over here, i guess you earned this: "
             typed_help = true;
         }
-        let help = `\n
-        home: opens home tab
-        projects: opens projects tab
-        about me: opens about me tab
-        contact: opens contact tab
-
-        hello: start a conversation with me
-        incorrect commands: outputs the number of incorrect commands you have entered
-        intro: plays the opening animation
-        loop: toggle looping
-        theme -flag colour:
-            flags:
-                -c: changes main colour of website
-                -bg: changes background colour of website
-                -t: changes text colour of website
-
-        help: opens up this menu (although you probably already know that)
-        exit: quits the terminal
-        `;
+        let help = localStorage.getItem("help")
         line += help;
         updateHistory(line);
         return;
