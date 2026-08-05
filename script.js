@@ -193,16 +193,19 @@ function pickRandom(arr, count) {
     return result;
 }
 
-for (let i = 0; i < 25; i++) {
-    const num = Math.floor(Math.random() * 3) + 1;
-    const row = document.createElement("div");
-    row.classList.add("bg-marquee", `row${num}`);
-    const content = document.createElement("div");
-    content.classList.add("bg-marquee-content");
-    const someLines = pickRandom(codeLines, 10);
-    content.textContent = someLines.join("   ·   ");
-    row.appendChild(content);
-    document.querySelector(".bg-marquee-stack").appendChild(row);
+const currentPage = window.location.pathname.split("/").pop();
+if (currentPage === "index.html") {
+   for (let i = 0; i < 25; i++) {
+        const num = Math.floor(Math.random() * 3) + 1;
+        const row = document.createElement("div");
+        row.classList.add("bg-marquee", `row${num}`);
+        const content = document.createElement("div");
+        content.classList.add("bg-marquee-content");
+        const someLines = pickRandom(codeLines, 10);
+        content.textContent = someLines.join("   ·   ");
+        row.appendChild(content);
+        document.querySelector(".bg-marquee-stack").appendChild(row);
+    }
 }
 
 function reloadLocalStorage() {
