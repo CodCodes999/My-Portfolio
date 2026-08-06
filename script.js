@@ -121,8 +121,8 @@ class Gear {
     }
 }
 
-// event listeners
-
+// event listeners TODO: create an i give up command whoch releases all the help documentation, but mae sure they are sure if they wanna give up cos then they lose the ability to find easter eggs
+// TODO: make contact page with button to linkedin, and an email sending thing
 const gears = [];
 const logo = document.getElementById("logo");
 const terminal = document.getElementById("terminal");
@@ -135,8 +135,14 @@ const codeLines = [
     "const x = 42; function render() { return x; }",
     "npm install --save-dev webpack webpack-cli",
     "git commit -m 'fix: resolve merge conflict'",
+    "RIGHT CLICK THE GEARS FOR MORE INFORMATION",
+    "type home in terminal",
+    "type intro in terminal for a special greeting :)",
+    "type loop in terminal for an insignificant change, can you find it",
+    "type incorrect commands in terminal, lets see how many times you messed up to unlock the secret egg",
     "SELECT * FROM users WHERE active = true;",
     "for (let i = 0; i < arr.length; i++) { }",
+    "type theme followed by a flag from (-c -bg or -t) followed by a colour to customise the website",
     "def calculate_sum(a, b): return a + b",
     "docker run -p 3000:3000 my-app:latest",
     "class Gear extends Animation { constructor() }",

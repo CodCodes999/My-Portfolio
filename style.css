@@ -22,39 +22,6 @@ body
     font-family: Consolas,"Cascadia Mono","Courier New",monospace;
 }
 
-.marquee 
-{
-    display: flex;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100vw;
-}
-
-.marquee-item 
-{
-    display: flex;
-    animation-duration: 60s ;
-    animation-iteration-count: infinite;
-    animation-name: marquee-content;
-    animation-timing-function: linear;
-    gap: 100vw;
-    color: var(--text);
-    background: transparent;
-    text-shadow: 
-            0 0 5px var(--text-shadow),
-            0 0 15px var(--cyan);
-}
-
-@keyframes marquee-content 
-{
-    from {
-        transform: translateX(100vw);
-    }
-    to {
-        transform: translateX(-100%);
-    }
-}
-
 #logo
 {
     position:relative;
@@ -124,7 +91,7 @@ body
     border-top: none;
     min-height: 47.1vw;
     height: min-content;
-    padding: 0px 0px 60px 0px;
+    padding: 60px 0px 60px 0px;
 }
 
 .card 
