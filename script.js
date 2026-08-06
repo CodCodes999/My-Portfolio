@@ -18,7 +18,7 @@ class Gear {
         this.right_clicked = false;
         this.left_clicked = false;
 
-        fetch("gear.json")
+        fetch("ascii art/gear.json")
             .then(response => response.json())
             .then(data => {
                 Gear.frames = data.frames;
@@ -569,6 +569,7 @@ function submitCommand(command) {
 
     if (command.trim().toLowerCase() === "contact") {
         revealTab("contact");
+        updateHistory("\nEstablishing connection...")
         updateHelp("\ncontact: reveals contact tab");
         return;
     }
@@ -686,3 +687,17 @@ function submitCommand(command) {
     count++;
     updateHistory("\nNo such command exists yet...");
 }
+
+const guy = [];
+fetch("ascii art/guy.json")
+    .then(response => response.json())
+    .then(data => {
+        guy.frames = data.frames;
+        const image = document.getElementById("image-of-me-about-me")
+        image.textContent = guy.frames[0].contentString;
+    })
+    .catch(error => {
+        console.log("Failed to load guy dude image:", error, '\n');
+});
+
+// TODO: help isnt reloading when switching between tabs

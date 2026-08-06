@@ -89,9 +89,9 @@ body
     border-style: solid;
     border-width: 5px;
     border-top: none;
-    min-height: 47.1vw;
+    min-height: 50.2vw;
     height: min-content;
-    padding: 60px 0px 60px 0px;
+    padding: 60px 0px 0px 0px;
 }
 
 .card 
@@ -428,6 +428,43 @@ body
 {
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
+}
+
+#summary-box
+{
+    display: flex;
+    margin-top: 15px;
+    align-items: center;
+}
+
+#image-of-me-about-me
+{
+    color: var(--text);
+    text-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
+    background-color: transparent;
+    white-space: pre-wrap;
+    margin-left: 40px;
+    font-size: small;
+}
+
+#about-me-summary-text
+{
+    color: var(--text);
+    text-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
+    background-color: transparent;
+    white-space: pre-wrap;
+    margin-left: 100px;
+    margin-top: 15px;
+    min-height: 250px;
+    max-width: 800px;
 }
 
 .row-1 .bg-marquee-content { animation-duration: 58s; animation-direction: reverse; margin-top: 3%}
