@@ -12,7 +12,6 @@ class Gear {
         this.forward_animation = null;
         this.backward_animation = null;
         this.should_cancel = true;
-        this.can_click = true;
         this.played_forward_animation = false;
         this.right_clicked = false;
         this.left_clicked = false;
@@ -136,7 +135,6 @@ class TextWindow {
         this.forward_animation = null;
         this.backward_animation = null;
         this.should_cancel = true;
-        this.can_click = true;
         this.played_forward_animation = false;
         this.right_clicked = false;
         this.left_clicked = false;
@@ -197,6 +195,33 @@ class TextWindow {
                 this.text_element.style.visibility = 'hidden';
             }
         }, 1000 / TextWindow.fps);
+    }
+
+    click_animation() {
+        if (!this.played_forward_animation) {
+            this.show_full_forward_animation();
+            this.should_cancel = false;
+            this.played_forward_animation = true;
+        }
+        else {
+            this.show_full_backward_animation();
+            this.played_forward_animation = false;
+        }
+    }
+
+    left_click_animation() {
+        if (!this.right_clicked) {
+            this.click_animation();
+            this.left_clicked = !this.left_clicked;
+        }
+    }
+
+    right_click_animation() {
+        console.log(this.left_clicked);
+        if (!this.left_clicked) {
+            this.click_animation();
+            this.right_clicked = !this.right_clicked;
+        }
     }
 }
 
@@ -802,14 +827,14 @@ document.querySelectorAll("[id]").forEach(element => {
             win.left_click_animation();
         });
 
-        win.text_element.addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            win.right_click_animation(event);
-        });
-
         element.addEventListener("contextmenu", (event) => {
             event.preventDefault();
-            win.right_click_animation(event);
+            win.right_click_animation();
+        });
+
+        win.text_element.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            win.right_click_animation();
         });
 
         element.addEventListener("mouseenter", () => {
@@ -818,15 +843,15 @@ document.querySelectorAll("[id]").forEach(element => {
             }
         });
 
-        element.addEventListener("mouseleave", () => {
-            if (win.should_cancel) {
-                win.show_full_backward_animation();
-            }
-        });
-
         win.text_element.addEventListener("mouseenter", () => {
             if (win.should_cancel) {
                 win.show_full_forward_animation();
+            }
+        });
+
+        element.addEventListener("mouseleave", () => {
+            if (win.should_cancel) {
+                win.show_full_backward_animation();
             }
         });
 
