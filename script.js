@@ -121,8 +121,8 @@ class Gear {
     }
 }
 
-// event listeners TODO: create an i give up command whoch releases all the help documentation, but mae sure they are sure if they wanna give up cos then they lose the ability to find easter eggs
-// TODO: make contact page with button to linkedin, and an email sending thing
+// EVENT LISTENERS
+
 const gears = [];
 const logo = document.getElementById("logo");
 const terminal = document.getElementById("terminal");
@@ -247,6 +247,8 @@ eggs: how many easter eggs have you discovered
 
 reloadLocalStorage();
 
+// GEAR CODE
+
 document.querySelectorAll("[id]").forEach(element => {
     if (/^g\d+$/.test(element.id)) {
         const gear = new Gear(element);
@@ -297,7 +299,7 @@ document.querySelectorAll(".copy-button").forEach(button => {
 });
 
 
-// header section of home page
+// HOME PAGE CODE
 
 const text1 = "HELLO WORLD!\nI AM SANAY";
 const text2 = "Software Developer | Mathmetician | Student";
@@ -350,7 +352,7 @@ function typeSub() {
 }
 
 
-// terminal functionality
+// TERMINAL FUNCTIONALITY CODE TODO: add i give up function
 
 let currentInput = "";
 let preprompt_text = "{</>} client@tokenode:~> "  // starting prompt - {&lt;/&gt;} client@tokenode:~>
@@ -365,7 +367,7 @@ let count = 0;
 
 async function paste() {
     const text = await navigator.clipboard.readText();
-    currentInput = text;
+    currentInput += text;
     inputElement.textContent = currentInput;
     return text;
 }
@@ -492,7 +494,7 @@ function setMainColor(colorString) {
     return parsed !== null;
 }
 
-function submitCommand(command) {
+function submitCommand(command) { // TODO: help isnt reloading when switching between tabs
     let line = `\n${preprompt.textContent}${command}`;
     if (historyElement.textContent == "") {
         line = `${preprompt.textContent}${command}`;
@@ -688,6 +690,8 @@ function submitCommand(command) {
     updateHistory("\nNo such command exists yet...");
 }
 
+// ABOUT ME PAGE CODE
+ 
 const guy = [];
 fetch("ascii art/guy.json")
     .then(response => response.json())
@@ -700,4 +704,4 @@ fetch("ascii art/guy.json")
         console.log("Failed to load guy dude image:", error, '\n');
 });
 
-// TODO: help isnt reloading when switching between tabs
+// TODO: make contact page with button to linkedin, and an email sending thing
