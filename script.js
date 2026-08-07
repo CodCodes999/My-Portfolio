@@ -11,7 +11,6 @@ class Gear {
         this.frame = 0;
         this.forward_animation = null;
         this.backward_animation = null;
-        this.should_cancel = false;
         this.should_cancel = true;
         this.can_click = true;
         this.played_forward_animation = false;
@@ -35,7 +34,7 @@ class Gear {
         this.frame = 0;
         this.forward_animation = setInterval(() => {
             this.gear.textContent = Gear.frames[this.frame].contentString;
-            this.frame = (this.frame + 1);
+            this.frame++;
             if (this.frame >= Gear.frames.length) {
                 if (Gear.looping) {
                     this.frame = 0;
@@ -118,6 +117,86 @@ class Gear {
     static toggleLooping() {
         Gear.looping = !Gear.looping;
         localStorage.setItem("gearLooping", Gear.looping);
+    }
+}
+
+class TextWindow {
+    static width = 300;
+    static height = 200;
+    static slide_distance = 30; // 30 frames * 2px
+    static frame_step = 3;
+    static total_frames = 10;
+    static fps = 30;
+    static opacity_step = 100/TextWindow.total_frames;
+
+    constructor(text, text_element, text_box) {
+        this.text = text;
+        this.text_element = text_element;
+        this.text_box = text_box;
+        this.forward_animation = null;
+        this.backward_animation = null;
+        this.should_cancel = true;
+        this.can_click = true;
+        this.played_forward_animation = false;
+        this.right_clicked = false;
+        this.left_clicked = false;
+        this.offset = TextWindow.slide_distance;
+        this.opacity = 0;
+    }
+
+    show_full_forward_animation() {
+        if (this.forward_animation) return;
+        clearInterval(this.backward_animation);
+        this.backward_animation = null;
+        this.text_element.style.display = 'block';
+        this.text_element.style.visibility = 'visible';
+        this.text_element.style.transform = `translateX(${this.offset}px)`;
+        this.text_element.style.opacity = this.opacity / 100;
+        this.frame = 0;
+
+        this.forward_animation = setInterval(() => {
+            this.frame++;
+            this.offset -= TextWindow.frame_step;
+            this.opacity += TextWindow.opacity_step;
+            if (this.opacity > 100) this.opacity = 100;
+            this.text_element.style.transform = `translateX(${this.offset}px)`;
+            this.text_element.style.opacity = this.opacity / 100;
+
+            if (this.offset <= 0) {
+                this.offset = 0;
+                this.text_element.style.transform = `translateX(0px)`;
+                clearInterval(this.forward_animation);
+                this.forward_animation = null;
+                this.played_forward_animation = true;
+            }
+        }, 1000 / TextWindow.fps);
+    }
+
+    show_full_backward_animation() {
+        if (this.backward_animation) return;
+        clearInterval(this.forward_animation);
+        this.forward_animation = null;
+
+        this.backward_animation = setInterval(() => {
+            this.frame--;
+            this.offset += TextWindow.frame_step;
+            this.opacity -= TextWindow.opacity_step;
+            if (this.opacity <= 0) this.opacity = 0;
+            this.text_element.style.transform = `translateX(${this.offset}px)`;
+            this.text_element.style.opacity = this.opacity / 100;
+
+            if (this.offset >= TextWindow.slide_distance) {
+                this.offset = TextWindow.slide_distance;
+                this.opacity = 0;
+                this.text_element.style.transform = `translateX(0px)`;
+                clearInterval(this.backward_animation);
+                this.backward_animation = null;
+                this.played_forward_animation = false;
+                this.should_cancel = true;
+                this.text_element.style.display = 'none';
+                this.text_element.style.visibility = 'hidden';
+            }
+        }, 1000 / TextWindow.fps);
     }
 }
 
@@ -703,5 +782,61 @@ fetch("ascii art/guy.json")
     .catch(error => {
         console.log("Failed to load guy dude image:", error, '\n');
 });
+
+const windows = [];
+document.querySelectorAll("[id]").forEach(element => {
+    const match = element.id.match(/^tb(\d+)$/);
+    if (match) {
+        const number = match[1]; // string, e.g. "3"
+        const text_element_id = `te${number}`;
+        const text_element = document.getElementById(text_element_id);
+        if (!text_element) return;
+
+        const win = new TextWindow(text_element.textContent, text_element, element);
+
+        element.addEventListener("click", () => {
+            win.left_click_animation();
+        });
+
+        win.text_element.addEventListener("click", () => {
+            win.left_click_animation();
+        });
+
+        win.text_element.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            win.right_click_animation(event);
+        });
+
+        element.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            win.right_click_animation(event);
+        });
+
+        element.addEventListener("mouseenter", () => {
+            if (win.should_cancel) {
+                win.show_full_forward_animation();
+            }
+        });
+
+        element.addEventListener("mouseleave", () => {
+            if (win.should_cancel) {
+                win.show_full_backward_animation();
+            }
+        });
+
+        win.text_element.addEventListener("mouseenter", () => {
+            if (win.should_cancel) {
+                win.show_full_forward_animation();
+            }
+        });
+
+        win.text_element.addEventListener("mouseleave", () => {
+            if (win.should_cancel) {
+                win.show_full_backward_animation();
+            }
+        });
+    }
+});
+
 
 // TODO: make contact page with button to linkedin, and an email sending thing

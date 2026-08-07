@@ -433,7 +433,7 @@ body
 #summary-box
 {
     display: flex;
-    margin-top: 15px;
+    margin-top: 90px;
     align-items: center;
 }
 
@@ -467,6 +467,76 @@ body
     max-width: 800px;
 }
 
+#edu
+{
+    margin-left: 50px;
+    margin-top: 120px;
+    color: var(--text);
+    text-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
+    background: var(-bg);
+    font-size: 100px;
+    width: 92vw;
+    text-align: center;
+}
+
+.text-container
+{
+    position: relative;
+    margin-left: 50px;
+    margin-top: 100px;
+    width: 92vw;
+    height: 200px;
+}
+
+.text-box
+{
+    position: absolute;
+    width: 92vw;
+    height: 200px;
+    background: var(-bg);
+    border: 2px solid var(--bg);
+    border-radius: 10px;
+    box-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--cyan),
+        0 0 25px var(--cyan);
+}
+
+.text-element
+{
+    position: absolute;
+    color: var(--text);
+    text-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
+    width: 92vw;
+    height: 200px;
+    background: var(-bg);
+    padding: 10px;
+    z-index: 100;
+    display: none;
+    visibility: hidden;
+}
+
+.down-arrow
+{
+    color: var(--text);
+    text-shadow: 
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--text-shadow),
+        0 0 20px var(--text-shadow),
+        0 0 35px var(--half-cyan);
+    font-size: 100px;
+    width: 100vw;
+    text-align: center;
+}
+
 .row-1 .bg-marquee-content { animation-duration: 58s; animation-direction: reverse; margin-top: 3%}
 .row1 .bg-marquee-content { animation-duration: 63s; animation-direction: reverse; }
 .row2 .bg-marquee-content { animation-duration: 71s; animation-direction: reverse; }
@@ -477,7 +547,6 @@ body
 
 .disrupt {background: var(--bg);}
 #d {width: 5px;}
-
 #d1 {width: 3%;}
 #d2 {width: 7%;}
 #d3 {width: 15%;}
