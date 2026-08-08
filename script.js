@@ -412,7 +412,7 @@ const headCursor = document.getElementById("cursor");
 const subElement = document.getElementById("subhead");
 const subCursor = document.getElementById("subcursor");
 
-let opened_terminal = false;
+let opened_terminal = false; // TODO: make looping persistent across pages
 logo.addEventListener("click", () => {
     if (!opened_terminal) {
         terminal.classList.toggle("open")
@@ -863,5 +863,10 @@ document.querySelectorAll("[id]").forEach(element => {
     }
 });
 
+document.querySelectorAll(".skill-box").forEach(box => {
+    const name = box.dataset.skill.toLowerCase();
+    const img = box.querySelector(".skill-icon");
+    img.src = `images/skills/${name}.png`;
+});
 
 // TODO: make contact page with button to linkedin, and an email sending thing

@@ -467,10 +467,11 @@ body
     max-width: 800px;
 }
 
-#edu
+.section
 {
     margin-left: 50px;
     margin-top: 120px;
+    margin-bottom: 50px;
     color: var(--text);
     text-shadow: 
         0 0 5px var(--text-shadow),
@@ -487,7 +488,7 @@ body
 {
     position: relative;
     margin-left: 50px;
-    margin-top: 100px;
+    margin-top: 25px;
     width: 92vw;
     height: 200px;
 }
@@ -533,8 +534,88 @@ body
         0 0 20px var(--text-shadow),
         0 0 35px var(--half-cyan);
     font-size: 100px;
-    width: 100vw;
+    width: 97vw;
     text-align: center;
+}
+
+.tunnel 
+{ 
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 205px;
+    z-index: 2;               /* sits above .skill-box */
+    pointer-events: none;
+
+    background: var(--bg);
+}
+
+.tunnel-left
+{
+    left: 0;
+}
+
+.tunnel-right 
+{
+    right: 0;
+}
+
+.skill-icon /* TODO: change images background colour to transparent, change image size to square-ish, change github image to white */
+{
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.skills-track 
+{
+    position: relative;
+    width: 1300px;
+    height: 260px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.skill-box 
+{
+    --total: 11;
+    --duration: 25s;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 60px;
+    height: 40px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 14px;
+
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 4px;
+    box-shadow:
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--cyan);
+    text-shadow:
+        0 0 5px var(--text-shadow),
+        0 0 10px var(--cyan);
+
+    offset-path: path("M 110,40 L 1190,40 L 1190,115 L 110,115 L 110,190 L 1190,190");
+    offset-rotate: 0deg;
+    offset-distance: 0%;
+
+    animation: snake-move var(--duration) linear infinite;
+    animation-delay: calc(var(--i) * -1 * (var(--duration) / var(--total)));
+}
+
+@keyframes snake-move 
+{
+    0%   { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
 }
 
 .row-1 .bg-marquee-content { animation-duration: 58s; animation-direction: reverse; margin-top: 3%}
